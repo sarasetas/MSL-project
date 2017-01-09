@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+		
+		
+<bean id="ReceiptBo"
+		class="bo.impl.GenericBoImpl">
+		<property name="dao">
+			<bean id="ReceiptDao"
+				class="dao.impl.GenericDaoImpl">
+				<constructor-arg>
+					<value>model.Receipt</value>
+				</constructor-arg>
+				<property name="sessionFactory" ref="sessionFactory" />
+			</bean>
+		</property>
+	</bean>
+	
+</beans>		

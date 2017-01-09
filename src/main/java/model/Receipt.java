@@ -12,7 +12,7 @@ public class Receipt implements Serializable  {
 
 	private int receiptSequence;
 	
-	private String originalReceiptNumber;
+	private String originalReceiptNumberCode;
 	
 	public int getReceiptSequence() {
 		return receiptSequence;
@@ -22,12 +22,12 @@ public class Receipt implements Serializable  {
 		this.receiptSequence = receiptSequence;
 	}
 
-	public String getOriginalReceiptNumber() {
-		return originalReceiptNumber;
+	public String getOriginalReceiptNumberCode() {
+		return originalReceiptNumberCode;
 	}
 
-	public void setOriginalReceiptNumber(String originalReceiptNumber) {
-		this.originalReceiptNumber = originalReceiptNumber;
+	public void setOriginalReceiptNumberCode(String originalReceiptNumber) {
+		this.originalReceiptNumberCode = originalReceiptNumber;
 	}
 
 	public static long getSerialversionuid() {
