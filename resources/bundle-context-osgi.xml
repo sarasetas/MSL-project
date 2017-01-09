@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+	xmlns:ctx="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                      http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+                      http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd 
+  					  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- *This conf is used to reference the service's configuration file *The 
+		configuration file should contain all conf values. *File is located in the 
+		following path: /usr/local/servicemix/etc/SCPersistenceService.cfg *If the 
+		file doesn't exist, the service will use the conf values bellow, cmProps -->
+	<osgix:cm-properties id="cmProps" persistent-id="SCPersistenceService">
+
+		<!-- Database connection properties -->
+
+		<prop key="dbHost">localhost</prop>
+		<prop key="dbPort">1521</prop>
+		<prop key="dbUser">msl</prop>
+		<prop key="dbPass">mslDatabase</prop>
+		<prop key="dbSid">xe</prop>
+		<prop key="dbInitialSize">3</prop>
+		<prop key="dbMaxActive">10</prop>
+		<prop key="dbMaxWait">600000</prop>
+		<prop key="dbMaxIdle">10</prop>
+		<prop key="dbRemoveAbandoned">false</prop>
+		<prop key="dbRemoveAbandonedTimeout">600</prop>
+		<prop key="dbTimeBetweenEvictionRunsMillis">300000</prop>
+		<prop key="dbNumTestsPerEvictionRun">6</prop>
+		<prop key="dbMinEvictableIdleTimeMillis">1800000</prop>
+		<prop key="dbPoolPreparedStatements">false</prop>
+		<prop key="dbMaxOpenPreparedStatements">100</prop>
+
+		<!-- JPA properties -->
+		<prop key="defaultSchema">msl</prop>
+		<prop key="showSQL">false</prop>
+		<prop key="batchSize">100</prop>
+
+	</osgix:cm-properties>
+
+	<ctx:property-placeholder properties-ref="cmProps" />
+
+	<import resource="classpath:META-INF/spring/bundle-context.xml" />
+	<import resource="classpath:META-INF/spring/spring-beans.xml" />
+
+	<!-- *Exposed OSGi services @SCPersistenceService - Exposes all the necessary 
+		BO to access the existing entities. @transactionManager - Exposes the transaction 
+		manager. -->
+	<osgi:service auto-export="all-classes" ref="SCPersistenceService"
+		interface="pt.victoria.sc.interfaces.service.SCPersistenceService" />
+
+	<osgi:service auto-export="all-classes" ref="SCTransactionManager"
+		interface="org.springframework.orm.hibernate3.HibernateTransactionManager" />
+	<osgi:service auto-export="all-classes" ref="jpaComponent"
+		interface="org.apache.camel.component.jpa.JpaComponent" />
+		
+	<osgi:service auto-export="all-classes" ref="genericJdbc"
+		interface="pt.victoria.sc.interfaces.jdbc.GenericJdbc" />		
+
+</beans>
