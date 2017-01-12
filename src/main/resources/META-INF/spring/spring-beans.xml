@@ -5,7 +5,7 @@
 		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 		
 		
-<bean id="ReceiptBo"
+	<bean id="receiptBo"
 		class="bo.impl.GenericBoImpl">
 		<property name="dao">
 			<bean id="ReceiptDao"
@@ -17,5 +17,22 @@
 			</bean>
 		</property>
 	</bean>
+    
+	<bean id="receiptOperation"
+		class="operation.ReceiptOperation" />
+	
+	<bean id="receiptService"
+		class="service.ReceiptService" />	
+		
+<!-- <bean id="receiptService"
+		class="service.ReceiptService"
+		autowire="byName">
+		<property name="receiptBo">
+		</property>
+	</bean>
+	
+	<bean id="receiptOperation"
+		class="operation.ReceiptOperation" /> -->	
+	
 	
 </beans>		
