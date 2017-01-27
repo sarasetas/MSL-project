@@ -6,10 +6,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<!-- Database Configuration -->
-	<import resource="../database/db-connection.xml"/>
-	<import resource="../database/Hibernate.xml"/>
-
+<!-- 	<import resource="classpath:META-INF/spring/database/db-connection.xml"/>  -->
+<!-- 	<import resource="classpath:META-INF/spring/database/Hibernate.xml"/>  -->
+	
 	<!-- Beans Declaration -->
-	<import resource="../spring-beans.xml"/>
-
+	<import resource="classpath:META-INF/spring/context.xml"/>
+	
 </beans>

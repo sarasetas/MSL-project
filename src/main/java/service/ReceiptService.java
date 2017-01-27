@@ -14,6 +14,10 @@ public class ReceiptService {
 	@Qualifier("receiptBo")
 	GenericBo<Receipt, Integer> receiptBo;
 	
+	public void setReceiptBo(GenericBo<Receipt, Integer> receiptBo) {
+		this.receiptBo = receiptBo;
+	}
+	
 	/** **/
 			
 	public void saveReceipt(Receipt receipt)

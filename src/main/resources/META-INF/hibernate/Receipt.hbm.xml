@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 12, 2017 1:25:36 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-<class name="model.Receipt" table="RECEIPT">
-		<id name="receiptSequence" type="int">
+    <class name="model.Receipt" table="RECEIPT">
+        <id name="receiptSequence" type="int">
 			<column name="SQ_RECEIPT" sql-type="NUMBER" />
 		</id>
 		<property generated="never" lazy="false" name="originalReceiptNumberCode" type="java.lang.String">
 			<column name="AC_ORIGINAL_RECEIPT_NUMBER" sql-type="VARCHAR2" length="25" />
 		</property>
-		
-</class>
+    </class>
 </hibernate-mapping>

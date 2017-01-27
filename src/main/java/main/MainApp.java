@@ -14,41 +14,34 @@ import operation.ReceiptOperation;
 @Component
 public class MainApp {
 	
-	@Autowired
-	private ReceiptOperation receiptOperation;
+/** Program logger **/
+private static final Logger LOG = LoggerFactory.getLogger(MainApp.class);
 	
-	/** Program logger **/
-	private static final Logger LOG = LoggerFactory.getLogger(MainApp.class);
-	private static ApplicationContext appContext =  new ClassPathXmlApplicationContext("META-INF/spring/config/bean-location.xml");
+@Autowired
+private ReceiptOperation receiptOperation;
 	
-	
-	
-	
-
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		// to define static
-	 //	MainApp mainApp = appContext.getBean(MainApp.class);
-		
-		//GenericBo receiptBo = (GenericBo)appContext.getBean("receiptBo");
+				    	
+		try{ 
+			
+			ApplicationContext appContext = new ClassPathXmlApplicationContext("META-INF/spring/config/bean-location.xml");
+			ReceiptOperation receiptOperation = (ReceiptOperation) appContext.getBean("receiptOperation");		    
 
-		    	/** insert **/
-		    	Receipt receipt = new Receipt();
-		    	
-		    	receipt.setReceiptSequence(123456);
-		    	receipt.setOriginalReceiptNumberCode("XPTO2");
-		    	
-		    	try{ 
-		    		mainApp.receiptOperation.insertReceipt(receipt);
-		    	//	receiptBo.save(receipt);
-		    		System.out.println("receipt inserted:" + receipt.getReceiptSequence() + ", " + receipt.getOriginalReceiptNumberCode());
-		    		}
-		    	catch(Exception e){
-		    		LOG.error(ExceptionUtils.getStackTrace(e));
-		    		System.out.println(receipt.getOriginalReceiptNumberCode() + receipt.getReceiptSequence() + ExceptionUtils.getStackTrace(e));
-		    	}
+		     /** insert **/
+		     Receipt receipt = new Receipt();
+		    		    	
+		     receipt.setReceiptSequence(12345616);
+		     receipt.setOriginalReceiptNumberCode("XPTO6");
+
+		     receiptOperation.insertReceipt(receipt);
+		     System.out.println("receipt inserted:" + receipt.getReceiptSequence() + ", " + receipt.getOriginalReceiptNumberCode());
+		}
+		catch(Exception e){
+    		LOG.error(ExceptionUtils.getStackTrace(e));
+			System.out.println( ExceptionUtils.getStackTrace(e));
+		}
 		  
 	}
 

@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 		
-		
-	<bean id="receiptBo"
+ 		
+	<bean id="receiptService"
+		class="service.ReceiptService"
+		autowire="byName">
+		<property name="receiptBo">
+			<bean factory-bean="PersistenceService" factory-method="getReceiptBo" />
+		</property>
+	</bean>
+							
+    <bean id="receiptBo"
 		class="bo.impl.GenericBoImpl">
 		<property name="dao">
-			<bean id="ReceiptDao"
+			<bean id="receiptDao"
 				class="dao.impl.GenericDaoImpl">
 				<constructor-arg>
 					<value>model.Receipt</value>
@@ -17,22 +27,16 @@
 			</bean>
 		</property>
 	</bean>
-    
-	<bean id="receiptOperation"
-		class="operation.ReceiptOperation" />
 	
-	<bean id="receiptService"
-		class="service.ReceiptService" />	
+	<bean id="receiptOperation"
+		class="operation.ReceiptOperation" autowire="byName"/>		
+
+	<!-- *All OSGI exposed services should be wired here. @id - ID used to reference 
+		the bean in the bundle-context-osgi.xml file @class - The class that implements 
+		the exposed service *All id values care case-sensitive and should be camel 
+		case -->
+  
+ 	<bean id="PersistenceService"
+		class="persistence.service.impl.PersistenceServiceImpl" /> 
 		
-<!-- <bean id="receiptService"
-		class="service.ReceiptService"
-		autowire="byName">
-		<property name="receiptBo">
-		</property>
-	</bean>
-	
-	<bean id="receiptOperation"
-		class="operation.ReceiptOperation" /> -->	
-	
-	
-</beans>		
+</beans>			

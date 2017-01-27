@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MSL-project
+Bundle-SymbolicName: MSL-project
+Bundle-Version: 1.0.0.qualifier
+Export-Package: bo,
+ bo.impl,
+ dao,
+ dao.impl,
+ main,
+ model,
+ operation,
+ persistence.service,
+ persistence.service.impl,
+ service
+Require-Bundle: MSL-project,
+ MSL-project
+Import-Package: operation, service
