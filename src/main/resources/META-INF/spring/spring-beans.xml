@@ -11,7 +11,7 @@
 		class="service.ReceiptService"
 		autowire="byName">
 		<property name="receiptBo">
-			<bean factory-bean="PersistenceService" factory-method="getReceiptBo" />
+		 	<bean factory-bean="PersistenceService" factory-method="getReceiptBo" />  
 		</property>
 	</bean>
 							
@@ -20,19 +20,26 @@
 		<property name="dao">
 			<bean id="receiptDao"
 				class="dao.impl.GenericDaoImpl">
-				<constructor-arg>
-					<value>model.Receipt</value>
-				</constructor-arg>
-				<property name="sessionFactory" ref="sessionFactory" />
+			 	<constructor-arg>
+					<value type="java.lang.Class">model.Receipt</value>
+				</constructor-arg> 
+	 			<property name="sessionFactory" ref="sessionFactory" />  
 			</bean>
 		</property>
 	</bean>
+	
+<!-- 	<bean id="ReceiptDao" class="dao.impl.GenericDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory">
+		</property>
+	</bean>
+ -->
+ 	
 	
 	<bean id="receiptOperation"
 		class="operation.ReceiptOperation" autowire="byName"/>		
 
 	<!-- *All OSGI exposed services should be wired here. @id - ID used to reference 
-		the bean in the bundle-context-osgi.xml file @class - The class that implements 
+		the bean in the bundle-context-os\gi.xml file @class - The class that implements 
 		the exposed service *All id values care case-sensitive and should be camel 
 		case -->
   

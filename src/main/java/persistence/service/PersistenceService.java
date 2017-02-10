@@ -1,5 +1,7 @@
 package persistence.service;
 
+import org.springframework.stereotype.Component;
+
 import bo.GenericBo;
 import model.Receipt;
 
@@ -13,6 +15,7 @@ import model.Receipt;
  * @author nturkman@maksen.com
  *
  */
+@Component
 public interface PersistenceService {
 	
 	
