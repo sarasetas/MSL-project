@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import dao.GenericDao;
 
@@ -21,6 +22,8 @@ import dao.GenericDao;
  * @param <PK>
  */
 @SuppressWarnings("unchecked")
+@Component
+@Transactional	
 public class GenericDaoImpl <T, PK extends Serializable> 
 	extends HibernateDaoSupport implements GenericDao <T, PK> {
 	
@@ -31,9 +34,6 @@ public class GenericDaoImpl <T, PK extends Serializable>
 	/**
 	 * Spring configured SessionFactory.
 	 */
-	@Autowired
-	@Qualifier("sessionFactory")
-	SessionFactory sessionFactory;
 	
 	private Class<T> type;
 	
@@ -96,7 +96,6 @@ public class GenericDaoImpl <T, PK extends Serializable>
 	
 	@Override
 	public List<Object> executeNamedQuery(String namedQuery, String[] args, Object[] values) {
-		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam(namedQuery, args, values);
 	}
 	
@@ -105,6 +104,7 @@ public class GenericDaoImpl <T, PK extends Serializable>
 		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam(namedQuery, args, values);
 	}
+	
 	
 	/***********************
 	 *  Getters & Setters  *
@@ -117,7 +117,7 @@ public class GenericDaoImpl <T, PK extends Serializable>
 	public void setType(Class<T> type) {
 		this.type = type;
 	}
-
+	
 
 
 

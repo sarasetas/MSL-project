@@ -36,7 +36,7 @@ private static final Logger LOG = LoggerFactory.getLogger(MainApp.class);
 		     /** insert **/
 		     Receipt receipt = new Receipt();
 		    		    	
-		     receipt.setReceiptSequence(12345611);
+		     receipt.setReceiptSequence(123456158);
 		     receipt.setOriginalReceiptNumberCode("XPTO6");
 		     receipt.setLastUpdateTimestamp(today);
 

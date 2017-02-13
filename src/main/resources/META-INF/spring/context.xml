@@ -13,80 +13,21 @@
   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	
 	<import resource="classpath:META-INF/spring/spring-beans.xml"/>
-	
+
 	
 	<context:annotation-config/>
-	
-	
-	
-	<!-- JUnit SessionFactory -->
- <!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
-		<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe"></property>
-		<property name="username" value="MSL"></property>
-		<property name="password" value="mslDatabase"></property>
-	</bean>
- -->
- 
- 		
 
- <!--		
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">validate</prop>
-				
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.default_schema">MSL</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.use_sql_comments">true</prop>
-				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
-			</props>
-		</property>
-
- 		<property name="mappingResources">
-			<list>
-		    	<value>META-INF/hibernate/Receipt.hbm.xml</value>
-			</list>
-		</property>
-	</bean>
--->
-			
-			
-
-		
-<!-- 	 <bean id="sessionFactory" factory-bean="emfRef" factory-method="getSessionFactory" />  --> 
-	
- 	 
-
-<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 				<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-				<property name="url" value="${hibernate.db_url}" />
-				<property name="username" value="${hibernate.db_user}" />
-				<property name="password" value="${hibernate.db_pass}" />
-				<property name="timeBetweenEvictionRunsMillis" value="300000" />
-			    <property name="numTestsPerEvictionRun" value="6" />
-			    <property name="minEvictableIdleTimeMillis" value="1800000" />
-			    <property name="poolPreparedStatements" value="true" />
-			    <property name="maxOpenPreparedStatements" value="100" />
-			</bean>	
- -->	 	
- 	
-	 
-	<!-- 	<bean id="sessionFactory"  factory-bean="emfRef" factory-method="getSessionFactory"></bean>  -->	
-	
-	<bean id="jpaComponent" class="org.apache.camel.component.jpa.JpaComponent">
-   		<property name="entityManagerFactory" ref="emfRef"/>
-   		<property name="transactionManager" ref="jpaTransactionManager"/>
-	</bean>
-	
-	
-	
+				<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe"></property>
+				<property name="username" value="MSL"></property>
+				<property name="password" value="mslDatabase"></property>				
+	</bean>	
 	
 	
 	<!-- This section configures the projects EntityManagerFactoryBean -->
 	
-	<bean id="emfRef" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="persistenceUnitName" value="unit" />
 		<property name="jpaVendorAdapter">
@@ -113,7 +54,7 @@
 			<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
 			<prop key="hibernate.hbm2ddl.auto">validate</prop>
 			<prop key="hibernate.show_sql">true</prop>
-			<prop key="hibernate.format_sql">false</prop>
+			<prop key="hibernate.format_sql">true</prop> <!-- inicialmente estava false -->
 			<prop key="hibernate.use_sql_comments">false</prop>
 			<prop key="hibernate.max_fetch_depth">1</prop>
 			<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
@@ -127,56 +68,26 @@
  	
 	</bean>
 	
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-				<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe"></property>
-				<property name="username" value="MSL"></property>
-				<property name="password" value="mslDatabase"></property>				
-	</bean>	
-	
-	<tx:annotation-driven />
+	<!-- This section configures the sessionFactory obtain from EntityManagerFactory -->
+	 <bean id="sessionFactory"  factory-bean="entityManagerFactory" factory-method="getSessionFactory"/>     	
+ 	
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="emfRef" />
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
- 	 <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource">
-			<ref bean="dataSource"/>
-    	</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">validate</prop>				
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.default_schema">MSL</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.use_sql_comments">true</prop>
-				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
-			</props>
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory">
 		</property>
-	</bean>		
- -->
-  
-   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource">
-			<ref bean="dataSource"/>
-    	</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">validate</prop>				
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.default_schema">MSL</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.use_sql_comments">true</prop>
-				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
-			</props>
-		</property>
-	</bean>		
- <!--
- <bean id="sessionFactory" factory-bean="emfRef" factory-method="getSessionFactory" />  	
--->	
+		<property name="nestedTransactionAllowed" value="true" />
+	</bean>
+	
+	<bean id="jpaComponent" class="org.apache.camel.component.jpa.JpaComponent">
+   		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+  		<property name="transactionManager" ref="jpaTransactionManager"/>  
+	</bean>
+		
 	<context:annotation-config />
 	
+	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
 	
 </beans>	
