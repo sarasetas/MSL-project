@@ -13,8 +13,7 @@
   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	
 	<import resource="classpath:META-INF/spring/spring-beans.xml"/>
-
-	
+		
 	<context:annotation-config/>
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
