@@ -24,6 +24,16 @@ public class ReceiptService {
 	{
 		receiptBo.save(receipt);
 	}
+	
+	public void removeReceipt(Receipt receipt)
+	{
+		receiptBo.delete(receipt);
+	}
+	
+	public void updateReceipt(Receipt receipt)
+	{
+		receiptBo.update(receipt);
+	}
 
 	
 	 /* Flush and Clear session for batch process

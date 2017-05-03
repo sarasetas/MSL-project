@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:util="http://www.springframework.org/schema/util"
+ xmlns:jee="http://www.springframework.org/schema/jee"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+  http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<import resource="classpath:META-INF/spring/spring-beans.xml"/>
+		
+	<context:annotation-config/>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+				<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe"></property>
+				<property name="username" value="MSL"></property>
+				<property name="password" value="mslDatabase"></property>				
+	</bean>	
+	
+	
+	<!-- This section configures the projects EntityManagerFactoryBean -->
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="unit" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+
+	<!-- 	
+			This section contains all JPA properties 
+			@hibernate.default_schema: If turned on, Hibernate will generate comments inside the SQL, for easier debugging, defaults to false.
+			@hibernate.dialect: This property makes Hibernate generate the appropriate SQL for the chosen database.
+			@hibernate.hbm2ddl.auto: Automatically validates or exports schema DDL to the database when the SessionFactory is created. With create-drop, the database schema will be dropped when the SessionFactory is closed explicitly.
+			@hibernate.show_sql: Write all SQL statements to console. This is an alternative to setting the log category org.hibernate.SQL to debug.
+			@hibernate.format_sql: Pretty print the SQL in the log and console.
+			@hibernate.use_sql_comments: If turned on, Hibernate will generate comments inside the SQL, for easier debugging, defaults to false.
+			@hibernate.max_fetch_depth: Sets a maximum "depth" for the outer join fetch tree for single-ended associations (one-to-one, many-to-one). A 0 disables default outer join fetching.
+			@hibernate.ejb.naming_strategy: Allows you to specify a "naming standard" for database objects and schema elements.
+			@hibernate.default_batch_fetch_size: Sets a default size for Hibernate batch fetching of associations. e.g. recommended values 4, 8, 16
+			@hibernate.connection.autocommit: Allows autocommit mode to be used for the JDBC connection.
+		-->
+		
+ 	<property name="jpaProperties">
+	      <props>
+			<prop key="hibernate.default_schema">MSL</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+			<prop key="hibernate.hbm2ddl.auto">validate</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.format_sql">true</prop> <!-- false -->
+			<prop key="hibernate.use_sql_comments">false</prop>
+			<prop key="hibernate.max_fetch_depth">1</prop>
+			<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+			<prop key="hibernate.connection.autocommit">false</prop>
+			<prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+   			<prop key="hibernate.order_inserts">true</prop>
+   			<prop key="hibernate.order_updates">true</prop>
+   			<prop key="hibernate.jdbc.batch_size">${batchSize}</prop>
+	      </props>
+   		</property>
+ 	
+	</bean>
+	
+	<!-- This section configures the sessionFactory obtain from EntityManagerFactory -->
+	 <bean id="sessionFactory"  factory-bean="entityManagerFactory" factory-method="getSessionFactory"/>     	
+ 	
+	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory">
+		</property>
+		<property name="nestedTransactionAllowed" value="true" />
+	</bean>
+	
+	<bean id="jpaComponent" class="org.apache.camel.component.jpa.JpaComponent">
+   		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+  		<property name="transactionManager" ref="jpaTransactionManager"/>  
+	</bean>
+		
+	<context:annotation-config />
+	
+	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
+	
+</beans>	

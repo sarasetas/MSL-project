@@ -17,4 +17,11 @@ public class ReceiptOperation {
 		
 	}
 	
+	public void removeReceipt (Receipt receipt){
+		receiptService.removeReceipt(receipt);
+	}
+	
+	public void updateReceipt (Receipt receipt){
+		receiptService.updateReceipt(receipt);
+	}
 }
